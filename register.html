@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RedNova — Donor Registration & Rare Blood Registry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+  
+  <!-- Header -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5 group font-heading font-extrabold text-lg text-slate-900 min-h-[44px]">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-rose-200 group-hover:scale-105 transition-transform">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <span class="logo-text">Red<span class="text-rose-500">Nova</span></span>
+      </a>
+      <div class="flex items-center gap-3">
+        <form action="find.html" method="GET" class="flex items-center m-0">
+          <div style="display: flex; align-items: center; background-color: #17164a !important; border: 1px solid #505081 !important; border-radius: 8px; padding: 4px 10px;">
+            <span style="color: #ef4444; margin-right: 8px;">🔍</span>
+            <input type="text" name="q" placeholder="Search..." style="background: transparent !important; color: #ef4444 !important; border: none !important; outline: none !important; width: 130px; font-size: 14px;">
+          </div>
+        </form>
+        <div id="nav-auth-container" class="flex items-center gap-2"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-xl mx-auto w-full px-4 py-6 sm:py-10">
+    <div class="dashboard-container rounded-2xl p-5 sm:p-8 mb-8">
+      <div class="mb-5">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-bold uppercase tracking-wider mb-2 border border-rose-200">
+          <span class="w-2 h-2 rounded-full bg-rose-600"></span> Donor & Rare Phenotype Onboarding
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 font-heading">Register as a Blood Donor</h1>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">Join the real-time availability network. Standard and rare phenotype donors save lives during critical shortages.</p>
+      </div>
+
+      <!-- Geolocation Auto-Detection Status Banner -->
+      <div id="geo-alert" class="gps-alert alert-warning mb-5 p-3.5 rounded-xl text-xs flex items-center gap-3 transition-all min-h-[44px]">
+        <div id="geo-icon" class="w-8 h-8 rounded-lg bg-amber-950/80 text-amber-300 border border-amber-500/40 flex items-center justify-center flex-shrink-0 animate-pulse">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-white" id="geo-title">Auto-detecting GPS Location...</div>
+          <div class="text-slate-300 text-[11px]" id="geo-subtitle">Prompting browser for live coordinates...</div>
+        </div>
+        <button type="button" id="btn-retry-gps" class="text-xs font-bold text-amber-400 hover:text-amber-300 underline flex-shrink-0 hidden min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
+          Retry GPS
+        </button>
+      </div>
+
+      <form id="register-form" class="space-y-4">
+        <!-- Full Name -->
+        <div>
+          <label for="reg-name" class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Full Name *</label>
+          <input type="text" id="reg-name" name="name" required placeholder="e.g. Manikandan R" class="w-full px-3.5 py-3 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-sm placeholder-slate-400 font-medium transition-all min-h-[44px]">
+        </div>
+
+        <!-- Phone & Blood Type -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="reg-phone" class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Phone Number *</label>
+            <input type="tel" id="reg-phone" name="phone" required placeholder="10-digit mobile" pattern="[0-9]{10}" class="w-full px-3.5 py-3 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-sm font-mono placeholder-slate-400 font-medium transition-all min-h-[44px]">
+            <p class="text-[11px] text-slate-400 mt-1">Masked publicly (e.g. +91 98******10)</p>
+          </div>
+          <div>
+            <label for="reg-bloodtype" class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Blood Type / Phenotype *</label>
+            <select id="reg-bloodtype" name="bloodType" required class="dropdown-menu w-full px-3.5 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm font-bold transition-all min-h-[44px]">
+              <optgroup label="Common ABO / Rh Types">
+                <option value="O+">O+ (O Positive)</option>
+                <option value="O-">O- (O Negative - Universal)</option>
+                <option value="A+">A+ (A Positive)</option>
+                <option value="A-">A- (A Negative)</option>
+                <option value="B+">B+ (B Positive)</option>
+                <option value="B-">B- (B Negative)</option>
+                <option value="AB+">AB+ (AB Positive)</option>
+                <option value="AB-">AB- (AB Negative)</option>
+              </optgroup>
+              <optgroup label="🌟 Rare Blood Phenotypes (Priority Network)">
+                <option value="Bombay (hh)">Bombay (hh) — Extremely Rare</option>
+                <option value="Rh-null">Rh-null ("Golden Blood")</option>
+                <option value="D--">D-- (Rare Rh Complex Deficiency)</option>
+                <option value="AB- (Rare)">AB- (Rare Phenotype Variant)</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <!-- Rare Phenotype Checkbox / Toggle -->
+        <div class="rare-blood-wrapper phenotype-section p-3.5 rounded-xl">
+          <label class="flex items-center gap-3 cursor-pointer min-h-[44px]">
+            <input type="checkbox" id="reg-is-rare" class="w-5 h-5 rounded text-rose-600 focus:ring-amber-500 border-slate-300 accent-rose-600 cursor-pointer">
+            <div>
+              <span class="text-xs font-black text-amber-400 block flex items-center gap-1.5">
+                <span>🌟 Rare Blood Phenotype Donor</span>
+                <span class="px-1.5 py-0.2 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] rounded font-bold">Priority Network</span>
+              </span>
+              <span class="text-[11px] text-slate-300 block">Check if you possess Bombay (hh), Rh-null, D--, or certified rare antigens.</span>
+            </div>
+          </label>
+
+          <!-- Expandable Rare Details Section -->
+          <div id="rare-fields-container" class="hidden mt-3 pt-3 border-t border-amber-500/30 space-y-2.5">
+            <div>
+              <label for="reg-rare-notes" class="block text-[11px] font-bold uppercase tracking-wider text-amber-300 mb-1">
+                Phenotype Details & Laboratory Certification Notes
+              </label>
+              <input 
+                type="text" 
+                id="reg-rare-notes" 
+                placeholder="e.g. Bombay Oh phenotype certified by Transfusion Medicine Dept #BMB-PY-01" 
+                class="w-full px-3 py-2.5 rounded-lg border border-amber-500/40 text-xs placeholder-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[44px]">
+            </div>
+            
+            <!-- High-Priority Badge -->
+            <div class="info-box priority-network-alert p-2.5 rounded-lg text-xs flex items-center gap-2">
+              <span class="text-base flex-shrink-0">🛡️</span>
+              <span class="font-semibold text-[11px] leading-tight">
+                <strong>Rare donors are enrolled in the High-Priority Regional Network:</strong> Extends automatic broadcast radius up to 250km for life-saving emergency SOS alerts.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pincode (6 Digits) & Location / City Name -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="reg-pincode" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Pincode (6 Digits)
+            </label>
+            <input 
+              type="text" 
+              id="reg-pincode" 
+              name="pincode" 
+              maxlength="6" 
+              pattern="[0-9]{6}" 
+              placeholder="e.g. 605008" 
+              class="w-full px-3.5 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-sm font-mono placeholder-slate-400 font-medium transition-all min-h-[44px]">
+            <p class="text-[11px] text-slate-500 mt-1">Auto-detects city/area</p>
+          </div>
+          
+          <div class="sm:col-span-2">
+            <div class="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+              <label for="reg-location" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                Location / City Name *
+              </label>
+              <span id="pincodeStatus" class="text-xs text-slate-500 font-semibold"></span>
+            </div>
+            <input 
+              type="text" 
+              id="reg-location" 
+              name="locationName" 
+              required 
+              placeholder="e.g. Lawspet, Puducherry" 
+              class="w-full px-3.5 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-sm placeholder-slate-400 font-medium transition-all min-h-[44px]">
+            <p class="text-[11px] text-slate-500 mt-1">Auto-filled from pincode or manual entry (fully editable anytime).</p>
+          </div>
+        </div>
+
+        <!-- Latitude & Longitude -->
+        <div class="coordinates-container location-wrapper grid grid-cols-2 gap-3 p-3 rounded-xl">
+          <div>
+            <label for="reg-lat" class="block text-[10px] font-bold uppercase tracking-wider text-slate-300 mb-1">Latitude</label>
+            <input type="number" step="any" id="reg-lat" name="lat" value="11.9401" class="w-full px-2.5 py-2 rounded-lg border border-slate-700 text-xs font-mono placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-rose-500 min-h-[44px]">
+          </div>
+          <div>
+            <label for="reg-lng" class="block text-[10px] font-bold uppercase tracking-wider text-slate-300 mb-1">Longitude</label>
+            <input type="number" step="any" id="reg-lng" name="lng" value="79.8341" class="w-full px-2.5 py-2 rounded-lg border border-slate-700 text-xs font-mono placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-rose-500 min-h-[44px]">
+          </div>
+        </div>
+
+        <!-- Last Donation Date -->
+        <div>
+          <label for="reg-last-date" class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Last Donation Date *</label>
+          <input type="date" id="reg-last-date" name="lastDonationDate" required class="w-full px-3.5 py-3 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-sm font-medium transition-all min-h-[44px]">
+          <p class="text-[11px] text-slate-400 mt-1" id="date-helper-text">RedNova automatically enforces the 90-day medical interval before showing you as eligible.</p>
+        </div>
+
+        <!-- Health & Screening Details -->
+        <div class="screening-container health-wrapper p-4 sm:p-5 rounded-2xl space-y-4">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">🩺</span>
+            <div>
+              <h3 class="text-sm font-black text-white">Health &amp; Donation Fitness Screening</h3>
+              <p class="text-[11px] text-slate-300">Standard NBTC donor fitness guidelines for recipient safety.</p>
+            </div>
+          </div>
+
+          <!-- Age & Weight -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="reg-age" class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Age (yrs) *</label>
+              <input
+                type="number"
+                id="reg-age"
+                name="age"
+                min="18"
+                max="65"
+                placeholder="18–65"
+                class="w-full px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-sm placeholder-slate-400 font-medium transition-all min-h-[44px]">
+              <p id="age-help" class="text-[10px] text-slate-400 mt-0.5">Must be between 18–65 yrs</p>
+            </div>
+            <div>
+              <label for="reg-weight" class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Weight (kg) *</label>
+              <input
+                type="number"
+                id="reg-weight"
+                name="weight"
+                min="45"
+                placeholder="Min 45 kg"
+                class="w-full px-3 py-2.5 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent text-sm placeholder-slate-400 font-medium transition-all min-h-[44px]">
+              <p id="weight-help" class="text-[10px] text-slate-400 mt-0.5">Min 45 kg to donate</p>
+            </div>
+          </div>
+          
+          <!-- Toggle Pills: Smoker / Alcoholic / On Medication -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- Smoker -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Smoker?</label>
+              <div class="flex gap-2">
+                <label class="toggle-btn btn-white flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer text-xs font-bold transition-all has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-950/80 has-[:checked]:text-emerald-300 min-h-[44px]">
+                  <input type="radio" name="isSmoker" id="smoker-no" value="false" class="sr-only" checked> No
+                </label>
+                <label class="toggle-btn btn-white flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer text-xs font-bold transition-all has-[:checked]:border-rose-500 has-[:checked]:bg-rose-950/80 has-[:checked]:text-rose-300 min-h-[44px]">
+                  <input type="radio" name="isSmoker" id="smoker-yes" value="true" class="sr-only"> Yes
+                </label>
+              </div>
+              <p id="smoker-warning" class="hidden text-[10px] text-amber-300 font-bold mt-1">🚬 Smokers require a mandatory 24–48 hr abstinence before donation clearance.</p>
+            </div>
+
+            <!-- Alcoholic -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">Alcoholic?</label>
+              <div class="flex gap-2">
+                <label class="toggle-btn btn-white flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer text-xs font-bold transition-all has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-950/80 has-[:checked]:text-emerald-300 min-h-[44px]">
+                  <input type="radio" name="isAlcoholic" id="alcoholic-no" value="false" class="sr-only" checked> No
+                </label>
+                <label class="toggle-btn btn-white flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer text-xs font-bold transition-all has-[:checked]:border-rose-500 has-[:checked]:bg-rose-950/80 has-[:checked]:text-rose-300 min-h-[44px]">
+                  <input type="radio" name="isAlcoholic" id="alcoholic-yes" value="true" class="sr-only"> Yes
+                </label>
+              </div>
+              <p id="alcoholic-warning" class="hidden text-[10px] text-amber-300 font-bold mt-1">🍺 Alcohol consumption within 24 hrs disqualifies for immediate SOS donations.</p>
+            </div>
+
+            <!-- On Medication -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">On Medication?</label>
+              <div class="flex gap-2">
+                <label class="toggle-btn btn-white flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer text-xs font-bold transition-all has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-950/80 has-[:checked]:text-emerald-300 min-h-[44px]">
+                  <input type="radio" name="isOnMedication" id="medication-no" value="false" class="sr-only" checked> No
+                </label>
+                <label class="toggle-btn btn-white flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl cursor-pointer text-xs font-bold transition-all has-[:checked]:border-amber-500 has-[:checked]:bg-amber-950/80 has-[:checked]:text-amber-300 min-h-[44px]">
+                  <input type="radio" name="isOnMedication" id="medication-yes" value="true" class="sr-only"> Yes
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Submit Button -->
+        <div class="pt-2">
+          <button type="submit" id="btn-submit-register" class="w-full py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold shadow-lg shadow-rose-200 active:scale-[0.99] transition-all text-sm flex items-center justify-center gap-2 min-h-[48px]">
+            <span>Complete Registration & Launch Profile</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-600">
+        Already registered as a donor? <a href="login.html" class="text-rose-700 font-bold hover:underline inline-flex items-center min-h-[44px] px-1">Log in with phone number</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer with Reset Demo Data Button -->
+  <footer>
+    <button 
+      type="button" 
+      data-action="reset-demo" 
+      class="reset-btn inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-950/60 hover:bg-indigo-900/80 text-white font-bold border border-rose-500/30 transition-all min-h-[44px] min-w-[44px] active:scale-95 shadow-sm"
+      title="Clear localStorage and restore initial seed donors & sample requests">
+      <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+      <span>Reset Demo Data</span>
+    </button>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function captureGeolocationOnLoad() {
+      const geoAlert = document.getElementById('geo-alert');
+      const geoIcon = document.getElementById('geo-icon');
+      const geoTitle = document.getElementById('geo-title');
+      const geoSubtitle = document.getElementById('geo-subtitle');
+      const retryBtn = document.getElementById('btn-retry-gps');
+
+      if (!navigator.geolocation) {
+        geoAlert.className = 'gps-alert alert-warning mb-5 p-3.5 rounded-xl text-xs flex items-center gap-3 min-h-[44px]';
+        geoIcon.className = 'w-8 h-8 rounded-lg bg-amber-950 text-amber-300 border border-amber-500/40 flex items-center justify-center flex-shrink-0';
+        geoTitle.textContent = 'Geolocation Not Supported';
+        geoSubtitle.textContent = 'Using default city location coordinates (11.9401, 79.8341).';
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          document.getElementById('reg-lat').value = lat.toFixed(4);
+          document.getElementById('reg-lng').value = lng.toFixed(4);
+
+          geoAlert.className = 'alert-success gps-captured-box mb-5 p-3.5 rounded-xl text-xs flex items-center gap-3 min-h-[44px]';
+          geoIcon.className = 'w-8 h-8 rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-500/40 flex items-center justify-center flex-shrink-0';
+          geoTitle.textContent = '✓ GPS Coordinates Captured';
+          geoSubtitle.textContent = `Latitude: ${lat.toFixed(4)}, Longitude: ${lng.toFixed(4)}`;
+          retryBtn.classList.add('hidden');
+        },
+        (error) => {
+          console.warn('[RedNova Geolocation]', error.message);
+          geoAlert.className = 'gps-alert alert-warning mb-5 p-3.5 rounded-xl text-xs flex items-center gap-3 min-h-[44px]';
+          geoIcon.className = 'w-8 h-8 rounded-lg bg-amber-950 text-amber-300 border border-amber-500/40 flex items-center justify-center flex-shrink-0';
+          geoTitle.textContent = 'GPS Permission Denied / Timed Out';
+          geoSubtitle.textContent = 'Using default coordinates (11.9401, 79.8341). City text will be used.';
+          retryBtn.classList.remove('hidden');
+        },
+        { timeout: 8000, enableHighAccuracy: true }
+      );
+    }
+
+    function setupRarePhenotypeToggle() {
+      const rareCheckbox = document.getElementById('reg-is-rare');
+      const rareContainer = document.getElementById('rare-fields-container');
+      const bloodTypeSelect = document.getElementById('reg-bloodtype');
+
+      rareCheckbox.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          rareContainer.classList.remove('hidden');
+          // If currently a common type, suggest Bombay (hh)
+          if (!window.DB.isRarePhenotype(bloodTypeSelect.value)) {
+            bloodTypeSelect.value = 'Bombay (hh)';
+          }
+        } else {
+          rareContainer.classList.add('hidden');
+          if (window.DB.isRarePhenotype(bloodTypeSelect.value)) {
+            bloodTypeSelect.value = 'O+';
+          }
+        }
+      });
+
+      bloodTypeSelect.addEventListener('change', (e) => {
+        const isRare = window.DB.isRarePhenotype(e.target.value);
+        rareCheckbox.checked = isRare;
+        if (isRare) {
+          rareContainer.classList.remove('hidden');
+        } else {
+          rareContainer.classList.add('hidden');
+        }
+      });
+    }
+
+    function setupDefaultDate() {
+      const defaultDate = new Date();
+      defaultDate.setDate(defaultDate.getDate() - 100);
+      document.getElementById('reg-last-date').value = defaultDate.toISOString().split('T')[0];
+
+      document.getElementById('reg-last-date').addEventListener('change', (e) => {
+        const selected = e.target.value;
+        const days = window.DB.daysSince(selected);
+        const helper = document.getElementById('date-helper-text');
+        if (days >= 90) {
+          helper.textContent = `✓ ${days} days since donation — You will be marked as immediately ELIGIBLE for requests.`;
+          helper.className = 'text-[11px] text-emerald-700 font-bold mt-1';
+        } else {
+          helper.textContent = `⏳ ${days} days since donation (${90 - days} days remaining in cool-off) — You will be in cool-off mode.`;
+          helper.className = 'text-[11px] text-amber-700 font-bold mt-1';
+        }
+      });
+    }
+
+    document.getElementById('register-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('reg-name').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const bloodType = document.getElementById('reg-bloodtype').value;
+      const isRareType = document.getElementById('reg-is-rare').checked || window.DB.isRarePhenotype(bloodType);
+      const rarePhenotypeNotes = document.getElementById('reg-rare-notes') ? document.getElementById('reg-rare-notes').value.trim() : '';
+      const pincode = document.getElementById('reg-pincode') ? document.getElementById('reg-pincode').value.trim() : '';
+      const locationName = document.getElementById('reg-location').value.trim();
+      const lat = parseFloat(document.getElementById('reg-lat').value) || 11.9401;
+      const lng = parseFloat(document.getElementById('reg-lng').value) || 79.8341;
+      const lastDonationDate = document.getElementById('reg-last-date').value;
+
+      if (!name || !phone || !bloodType || !locationName || !lastDonationDate) {
+        window.AppUtils.showToast('Please fill out all required fields.', 'error');
+        return;
+      }
+
+      const age = parseInt(document.getElementById('reg-age')?.value) || null;
+      const weight = parseFloat(document.getElementById('reg-weight')?.value) || null;
+      const isSmoker = document.querySelector('input[name="isSmoker"]:checked')?.value === 'true';
+      const isAlcoholic = document.querySelector('input[name="isAlcoholic"]:checked')?.value === 'true';
+      const isOnMedication = document.querySelector('input[name="isOnMedication"]:checked')?.value === 'true';
+
+      // ── Health Eligibility Validation ────────────────────────────────────────
+      const blockNotice     = document.getElementById('health-block-notice');
+      const blockMsg        = document.getElementById('health-block-message');
+      const restrictNotice  = document.getElementById('health-restricted-notice');
+
+      // Reset notices
+      if (blockNotice)    { blockNotice.classList.add('hidden'); }
+      if (restrictNotice) { restrictNotice.classList.add('hidden'); }
+
+      // Hard block: age < 18 or age > 65
+      if (age !== null && (age < 18 || age > 65)) {
+        if (blockMsg)  blockMsg.textContent = `Age ${age} is outside the allowed range (18–65 years). You do not meet the minimum medical criteria for blood donation.`;
+        if (blockNotice) { blockNotice.classList.remove('hidden'); blockNotice.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        window.AppUtils.showToast('🚫 Age must be between 18–65 years to register as a donor.', 'error', 5000);
+        return;
+      }
+
+      // Hard block: weight < 45 kg
+      if (weight !== null && weight < 45) {
+        if (blockMsg)  blockMsg.textContent = `Weight ${weight} kg is below the minimum required (45 kg). You do not meet the minimum medical criteria for blood donation.`;
+        if (blockNotice) { blockNotice.classList.remove('hidden'); blockNotice.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        window.AppUtils.showToast('🚫 Minimum weight of 45 kg is required to donate blood.', 'error', 5000);
+        return;
+      }
+
+      // Restricted mode: smoker or alcoholic
+      const eligibleForEmergency = !(isSmoker || isAlcoholic);
+      if (isSmoker || isAlcoholic) {
+        if (restrictNotice) { restrictNotice.classList.remove('hidden'); restrictNotice.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      }
+
+      const existing = window.DB.getDonorByPhone(phone);
+      let targetDonor;
+
+      if (existing) {
+        targetDonor = window.DB.updateDonor(existing.id, {
+          name,
+          phone,
+          bloodType,
+          isRareType,
+          rarePhenotypeNotes,
+          emergencyStandby: eligibleForEmergency,
+          eligibleForEmergency,
+          pincode,
+          locationName,
+          lat,
+          lng,
+          lastDonationDate,
+          age,
+          weight,
+          isSmoker,
+          isAlcoholic,
+          isOnMedication,
+          available: eligibleForEmergency  // restricted donors start OFFLINE
+        });
+      } else {
+        targetDonor = window.DB.addDonor({
+          name,
+          phone,
+          bloodType,
+          isRareType,
+          rarePhenotypeNotes,
+          emergencyStandby: eligibleForEmergency,
+          eligibleForEmergency,
+          pincode,
+          locationName,
+          lat,
+          lng,
+          lastDonationDate,
+          age,
+          weight,
+          isSmoker,
+          isAlcoholic,
+          isOnMedication,
+          available: eligibleForEmergency  // restricted donors start OFFLINE
+        });
+      }
+
+      window.DB.setSession(targetDonor.id);
+
+      if (!eligibleForEmergency) {
+        window.AppUtils.showToast(
+          `⚠️ Profile created in restricted mode, ${targetDonor.name}. Smoking or alcohol use has paused your emergency eligibility. Update once cleared.`,
+          'warning',
+          7000
+        );
+      } else {
+        window.AppUtils.showToast(
+          isRareType
+            ? `🌟 Welcome to the Rare Blood Registry, ${targetDonor.name}!`
+            : `Registration successful! Welcome, ${targetDonor.name}.`,
+          'success'
+        );
+      }
+
+      setTimeout(() => {
+        window.location.href = 'profile.html';
+      }, eligibleForEmergency ? 500 : 2500);
+    });
+
+    /**
+     * Real-time inline warnings on health toggle changes
+     */
+    function setupHealthEligibilityListeners() {
+      // Smoker yes/no live warning
+      document.querySelectorAll('input[name="isSmoker"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          const isYes = document.querySelector('input[name="isSmoker"]:checked')?.value === 'true';
+          const warn = document.getElementById('smoker-warning');
+          const restrictNotice = document.getElementById('health-restricted-notice');
+          if (warn) warn.classList.toggle('hidden', !isYes);
+          updateRestrictedNotice();
+        });
+      });
+
+      // Alcoholic yes/no live warning
+      document.querySelectorAll('input[name="isAlcoholic"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          const isYes = document.querySelector('input[name="isAlcoholic"]:checked')?.value === 'true';
+          const warn = document.getElementById('alcoholic-warning');
+          if (warn) warn.classList.toggle('hidden', !isYes);
+          updateRestrictedNotice();
+        });
+      });
+
+      // Age real-time validation
+      const ageInput = document.getElementById('reg-age');
+      if (ageInput) {
+        ageInput.addEventListener('input', () => {
+          const val = parseInt(ageInput.value);
+          const help = document.getElementById('age-help');
+          const blockNotice = document.getElementById('health-block-notice');
+          const blockMsg    = document.getElementById('health-block-message');
+          if (!ageInput.value) {
+            if (help) { help.textContent = 'Must be between 18–65 yrs'; help.className = 'text-[10px] text-slate-500 mt-0.5'; }
+            if (blockNotice) blockNotice.classList.add('hidden');
+            return;
+          }
+          if (val < 18 || val > 65) {
+            if (help) { help.textContent = `Age ${val} is outside allowed range (18–65)`; help.className = 'text-[10px] text-rose-700 font-bold mt-0.5'; }
+            if (blockMsg) blockMsg.textContent = `Age ${val} is outside the allowed range (18–65 years). You do not meet the minimum medical criteria for blood donation.`;
+            if (blockNotice) blockNotice.classList.remove('hidden');
+            ageInput.classList.add('border-rose-400', 'ring-1', 'ring-rose-400');
+          } else {
+            if (help) { help.textContent = `✓ Age ${val} — eligible`; help.className = 'text-[10px] text-emerald-700 font-bold mt-0.5'; }
+            if (blockNotice) blockNotice.classList.add('hidden');
+            ageInput.classList.remove('border-rose-400', 'ring-1', 'ring-rose-400');
+          }
+        });
+      }
+
+      // Weight real-time validation
+      const weightInput = document.getElementById('reg-weight');
+      if (weightInput) {
+        weightInput.addEventListener('input', () => {
+          const val = parseFloat(weightInput.value);
+          const help = document.getElementById('weight-help');
+          const blockNotice = document.getElementById('health-block-notice');
+          const blockMsg    = document.getElementById('health-block-message');
+          if (!weightInput.value) {
+            if (help) { help.textContent = 'Min 45 kg to donate'; help.className = 'text-[10px] text-slate-500 mt-0.5'; }
+            if (blockNotice) blockNotice.classList.add('hidden');
+            return;
+          }
+          if (val < 45) {
+            if (help) { help.textContent = `${val} kg is below the 45 kg minimum`; help.className = 'text-[10px] text-rose-700 font-bold mt-0.5'; }
+            if (blockMsg) blockMsg.textContent = `Weight ${val} kg is below the minimum required (45 kg). You do not meet the minimum medical criteria for blood donation.`;
+            if (blockNotice) blockNotice.classList.remove('hidden');
+            weightInput.classList.add('border-rose-400', 'ring-1', 'ring-rose-400');
+          } else {
+            if (help) { help.textContent = `✓ ${val} kg — eligible`; help.className = 'text-[10px] text-emerald-700 font-bold mt-0.5'; }
+            if (blockNotice) blockNotice.classList.add('hidden');
+            weightInput.classList.remove('border-rose-400', 'ring-1', 'ring-rose-400');
+          }
+        });
+      }
+    }
+
+    function updateRestrictedNotice() {
+      const isSmoker    = document.querySelector('input[name="isSmoker"]:checked')?.value === 'true';
+      const isAlcoholic = document.querySelector('input[name="isAlcoholic"]:checked')?.value === 'true';
+      const notice = document.getElementById('health-restricted-notice');
+      if (notice) notice.classList.toggle('hidden', !(isSmoker || isAlcoholic));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      captureGeolocationOnLoad();
+      setupRarePhenotypeToggle();
+      setupDefaultDate();
+      setupHealthEligibilityListeners();
+      document.getElementById('btn-retry-gps').addEventListener('click', captureGeolocationOnLoad);
+    });
+  </script>
+</body>
+</html>

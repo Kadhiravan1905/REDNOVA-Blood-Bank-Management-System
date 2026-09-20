@@ -1,0 +1,906 @@
+/* RedNova Custom Styles & Accessibility Defaults */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
+
+:root {
+  --primary-red: #e11d48;
+  --primary-red-hover: #be123c;
+  --accent-crimson: #9f1239;
+  --bg-gradient: radial-gradient(circle at 50% 0%, rgba(225, 29, 72, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+
+  /* Multi-stop dynamic gradient palette */
+  --bg-main: #0b0f19;
+  --bg-surface: #1e1b4b;   /* Indigo 950 */
+  --ui-accent: #311042;    /* Purple tint */
+  --text-primary: #ffffff;
+  --text-muted: #8686ac;   /* Light steel blue */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text-primary, #ffffff);
+  background-color: var(--bg-surface, #0b0f19);
+  background-image: linear-gradient(
+    -45deg, 
+    var(--bg-main), 
+    var(--bg-surface), 
+    var(--ui-accent),
+    var(--bg-main)
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Gradient shift animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Accessibility: respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+    background-size: 100% 100%;
+  }
+}
+
+/* Typography Theme Overrides */
+h1, .hero-title {
+  color: var(--text-primary) !important;
+}
+
+.hero-title .accent-text,
+h1 .accent-text {
+  color: #ef4444 !important;
+}
+
+p, .hero-subtitle {
+  color: var(--text-muted);
+}
+
+/* Frosted glass header */
+header, .navbar {
+  background-color: rgba(15, 14, 71, 0.5) !important; /* Semi-transparent version of darkest blue */
+  backdrop-filter: blur(12px) !important; /* Creates the frosted glass effect */
+  -webkit-backdrop-filter: blur(12px) !important; /* Safari support */
+  border-bottom: 1px solid rgba(134, 134, 172, 0.2) !important; /* Very subtle transparent border */
+}
+
+/* Header text color */
+header a:not([class*="bg-rose-"]):not([class*="bg-red-"]),
+header span:not([class*="bg-rose-"]):not([class*="bg-red-"]):not(.text-rose-600),
+.navbar-links {
+  color: var(--text-primary);
+}
+
+/* Fix the login text disappearing on hover */
+header a:hover, .login-btn:hover {
+  color: #ef4444 !important; /* Changes the text to RedNova red on hover */
+  background-color: transparent !important; /* Ensures the background doesn't turn solid white */
+  transition: color 0.3s ease;
+}
+
+/* Logo styling */
+.logo-text {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}
+
+/* Card & Section Theming */
+.status-card, .feature-card {
+  /* A deep, dark ruby color with slight transparency */
+  background-color: rgba(35, 10, 24, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  
+  /* A subtle energetic red border to frame the card */
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  
+  /* A soft crimson glow instead of a standard dark drop shadow */
+  box-shadow: 0 8px 32px rgba(220, 38, 38, 0.15) !important;
+  
+  border-radius: 16px !important;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Make sure the inner boxes (like 'Total Donors') contrast well inside the new red cards */
+.inner-stat-box {
+  background-color: rgba(0, 0, 0, 0.25) !important; /* Darkens the inner boxes */
+  border: 1px solid rgba(239, 68, 68, 0.15) !important;
+  border-radius: 8px !important;
+}
+
+.feature-card:hover {
+  border: 1px solid rgba(239, 68, 68, 0.6) !important;
+  box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3) !important;
+  transform: translateY(-2px); /* Lifts the card slightly */
+}
+
+.feature-card h3, .status-card h2 {
+  color: var(--text-primary) !important;
+}
+
+.feature-card p, .status-card p {
+  color: var(--text-muted) !important;
+}
+
+/* Dashboard Container Theming */
+.dashboard-container {
+  background-color: rgba(35, 10, 24, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  border-radius: 16px !important;
+  color: #f8fafc !important; /* Ensures main text turns white */
+  box-shadow: 0 8px 32px rgba(220, 38, 38, 0.15);
+}
+
+/* Override dark text on the inner elements */
+.dashboard-container h1,
+.dashboard-container h2, 
+.dashboard-container h3, 
+.dashboard-container p, 
+.dashboard-container span:not([class*="bg-emerald-"]):not([class*="bg-rose-"]):not([class*="bg-amber-"]) {
+  color: #f8fafc;
+}
+
+/* Nav Active */
+.nav-active {
+  transition: all 0.3s ease; /* Makes the color change smooth */
+}
+
+.nav-active:hover {
+  background-color: #ef4444 !important; /* Changes background to RedNova Red */
+  color: #ffffff !important; /* Keeps the text crisp white */
+}
+
+/* Donor Cards & Names */
+.donor-card {
+  background-color: rgba(35, 10, 24, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  border-radius: 16px !important;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease;
+}
+
+.donor-card:hover {
+  border: 1px solid rgba(239, 68, 68, 0.6) !important;
+  box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+.donor-name {
+  font-weight: 800;
+  color: #f8fafc !important;
+}
+
+/* Profile Blood Type Square */
+.blood-type-square {
+  background: linear-gradient(135deg, #e11d48, #be123c);
+  color: #ffffff !important;
+  font-weight: 900;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(225, 29, 72, 0.35);
+}
+
+/* Profile Name & Status Badge */
+.profile-name {
+  color: #ffffff !important;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* Profile Details */
+.profile-details {
+  color: var(--text-muted, #8686ac) !important;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.profile-details span {
+  color: var(--text-muted, #8686ac) !important;
+}
+
+.middle-section-title {
+  color: var(--text-primary) !important;
+}
+
+.middle-section-subtitle {
+  color: var(--text-muted) !important;
+}
+
+/* 1. Style the main dropdown box and the options inside it */
+select, 
+select option, 
+.dropdown-menu, 
+.dropdown-item {
+  background-color: #17164a !important; /* Deep midnight blue */
+  color: #ffffff !important; /* Pure white text for clear visibility */
+  border-color: #505081 !important;
+}
+
+/* 2. Change the highlight color when you hover or select a profile */
+select option:checked, 
+select option:hover, 
+.dropdown-item:hover {
+  background-color: #ef4444 !important; /* RedNova Red highlight */
+  color: #ffffff !important;
+}
+
+/* 1. Main Input Bar & Dropdowns (The large empty box) */
+.search-input-container, 
+input[type="text"], 
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+select,
+.dropdown-menu {
+  background-color: #17164a !important; /* Deep midnight blue */
+  border: 1px solid var(--ui-accent, #505081) !important; /* Muted blue border */
+  color: var(--text-primary, #f8fafc) !important; /* Crisp white text */
+  border-radius: 8px;
+}
+
+/* Ensure placeholder text in the inputs is visible but slightly faded */
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted, #8686AC) !important;
+}
+
+/* Update the container holding the SOS toggle */
+.sos-mode-container, 
+.rare-sos-card {
+  background-color: rgba(15, 14, 71, 0.6) !important; /* Dark blue glass effect to match your search inputs */
+  border: 1px solid rgba(251, 191, 36, 0.5) !important; /* Subtle Amber/Gold border */
+  border-radius: 12px !important;
+  color: var(--text-primary, #f8fafc) !important;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.1) !important; /* Very soft gold drop-shadow */
+  transition: all 0.3s ease;
+}
+
+/* Ensure the text inside turns crisp white */
+.sos-mode-container .title, 
+.sos-mode-container .subtitle,
+.rare-sos-card .title,
+.rare-sos-card .subtitle {
+  color: #f8fafc !important; 
+}
+
+/* Optional: Make the box glow a bit brighter when the user hovers over it */
+.sos-mode-container:hover,
+.rare-sos-card:hover {
+  background-color: rgba(15, 14, 71, 0.8) !important;
+  border-color: rgba(251, 191, 36, 0.9) !important;
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.2) !important;
+}
+
+/* Update the Back to Home button */
+.back-btn {
+  background-color: rgba(15, 14, 71, 0.6) !important; /* Matches the dark header glass effect */
+  border: 1px solid #505081 !important; /* Subtle blue border */
+  color: #f8fafc !important; /* Crisp white text so it is visible */
+  border-radius: 8px !important; /* Or 20px if you want it to remain pill-shaped */
+  transition: all 0.3s ease;
+}
+
+/* Add a hover effect so it feels interactive */
+.back-btn:hover {
+  background-color: #272757 !important; /* Slightly lighter blue on hover */
+  border-color: #ef4444 !important; /* Subtle RedNova red border */
+  color: #ffffff !important;
+}
+
+/* 2. Action Buttons ("Use Live GPS", "ETA", "Detect My Location") */
+.action-btn, 
+.toggle-btn {
+  background-color: rgba(15, 14, 71, 0.6) !important;
+  border: 1px solid var(--ui-accent, #505081) !important;
+  color: var(--text-primary, #f8fafc) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+}
+
+/* Add a subtle glow when hovering over these buttons */
+.action-btn:hover, 
+.toggle-btn:hover {
+  background-color: var(--bg-surface, #272757) !important;
+  border-color: #ef4444 !important; /* Subtle RedNova red border on hover */
+  cursor: pointer;
+}
+
+/* 3. Blood Type Filter Buttons (O+, A+, B-, etc.) */
+.blood-type-btn,
+.blood-filter-btn {
+  background-color: rgba(15, 14, 71, 0.6) !important;
+  border: 1px solid var(--ui-accent, #505081) !important;
+  color: var(--text-muted, #8686AC) !important; /* Start with slightly faded text */
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+}
+
+/* Hover and Active states for the Blood Type buttons */
+.blood-type-btn:hover,
+.blood-filter-btn:hover {
+  background-color: var(--bg-surface, #272757) !important;
+  color: var(--text-primary, #f8fafc) !important;
+  border-color: #ef4444 !important;
+  cursor: pointer;
+}
+
+/* Keep your existing red style for the active "ALL" button */
+.blood-type-btn.active,
+.blood-filter-btn.active {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  border: 1px solid #ef4444 !important;
+}
+
+/* 1. Force the background to be dark and the typed text to be white */
+.search-container input, 
+.nav-search input,
+.search-input-container input,
+header input[type="search"],
+header input[type="text"],
+input[type="text"].search-input,
+.search-input,
+.nav-search {
+  background-color: #17164a !important; 
+  color: #ffffff !important; /* Pure white text so you can read what you type */
+  border: 1px solid #505081 !important;
+  border-radius: 8px !important;
+}
+
+/* 2. Force the placeholder text to be a readable light gray/blue */
+.search-container input::placeholder, 
+.nav-search input::placeholder,
+.search-input-container input::placeholder,
+header input::placeholder,
+.search-input::placeholder,
+.nav-search::placeholder {
+  color: #a1a1aa !important; /* Light gray/silver so it stands out */
+  opacity: 1 !important; /* Ensures the browser doesn't fade it out too much */
+}
+
+.search-icon {
+  color: #8686AC !important; 
+}
+
+/* Assuming your green pill has a class like .radar-toggle */
+.radar-toggle {
+  position: relative !important; /* This is required for the circle to position correctly inside it */
+  background-color: #10b981 !important; /* Keeps your current green active color */
+}
+
+/* This creates the white circle and pushes it to the right side (the "ON" position) */
+.radar-toggle::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 2px !important; /* Adjust slightly if it doesn't look perfectly centered vertically */
+  right: 2px !important; /* Pushes the circle to the right side of the switch */
+  width: 20px !important; /* Adjust size based on how tall your green pill is */
+  height: 20px !important;
+  background-color: #ffffff !important; /* Crisp white knob */
+  border-radius: 50% !important; /* Makes it a perfect circle */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important; /* Adds a tiny shadow for 3D depth */
+}
+
+/* Unlocked Badge 1: First Drop (Pink/Red) */
+.badge-first-drop {
+  background-color: rgba(239, 68, 68, 0.1) !important; /* Very faint red background */
+  border: 1px solid rgba(239, 68, 68, 0.5) !important; /* Glowing red border */
+  color: #fca5a5 !important; /* Light red text so it is highly readable */
+}
+
+/* Unlocked Badge 2: Reliable Donor (Green) */
+.badge-reliable {
+  background-color: rgba(16, 185, 129, 0.1) !important; /* Very faint green */
+  border: 1px solid rgba(16, 185, 129, 0.5) !important; 
+  color: #6ee7b7 !important; /* Light green text */
+}
+
+/* Unlocked Badge 3: Guardian Pledge (Blue) */
+.badge-guardian {
+  background-color: rgba(59, 130, 246, 0.1) !important; /* Very faint blue */
+  border: 1px solid rgba(59, 130, 246, 0.5) !important;
+  color: #93c5fd !important; /* Light blue text */
+}
+
+/* Badge 5: Healthy Donor (Orange Glow) */
+.badge-healthy {
+  background-color: rgba(249, 115, 22, 0.1) !important;
+  border: 1px solid rgba(249, 115, 22, 0.5) !important;
+  color: #fdba74 !important;
+}
+
+/* Badge 6: Prime Age (Cyan/Teal Glow) */
+.badge-prime {
+  background-color: rgba(20, 184, 166, 0.1) !important;
+  border: 1px solid rgba(20, 184, 166, 0.5) !important;
+  color: #5eead4 !important;
+}
+
+/* Badge 7: Iron Will (Purple Glow) */
+.badge-iron {
+  background-color: rgba(168, 85, 247, 0.1) !important;
+  border: 1px solid rgba(168, 85, 247, 0.5) !important;
+  color: #d8b4fe !important;
+}
+
+/* Badge 8: Veteran Donor (Bronze Glow) */
+.badge-veteran {
+  background-color: rgba(217, 119, 6, 0.1) !important;
+  border: 1px solid rgba(217, 119, 6, 0.5) !important;
+  color: #fcd34d !important;
+}
+
+/* Badge 9: Champion Donor (Gold Glow) */
+.badge-champion {
+  background-color: rgba(234, 179, 8, 0.1) !important;
+  border: 1px solid rgba(234, 179, 8, 0.5) !important;
+  color: #fef08a !important;
+}
+
+/* Locked Badges (The gray ones) */
+.badge-locked {
+  background-color: rgba(255, 255, 255, 0.03) !important; /* Almost invisible background */
+  border: 1px solid rgba(255, 255, 255, 0.1) !important; /* Very faint white border */
+  color: #64748b !important; /* Muted gray text */
+}
+
+/* Badge Counter Pill */
+.badge-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #fcd34d !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+}
+
+/* Update the boxes under Health & Screening Details */
+.health-box { 
+  background-color: rgba(0, 0, 0, 0.25) !important; /* Deep, recessed dark background */
+  border: 1px solid rgba(239, 68, 68, 0.2) !important; /* Very subtle RedNova red border */
+  color: #f8fafc !important; /* Crisp white text so you can read the details inside */
+  border-radius: 8px;
+  padding: 12px; /* Adjust based on your layout */
+}
+
+/* Make sure any headings or labels inside those boxes also turn white */
+.health-box h4, 
+.health-box span, 
+.health-box p {
+  color: #f8fafc !important;
+}
+
+/* Update the white demo account boxes to fit the dark theme */
+.demo-account-card {
+  background-color: rgba(0, 0, 0, 0.25) !important; /* Deep, dark recessed look */
+  border: 1px solid rgba(239, 68, 68, 0.2) !important; /* Subtle red border */
+  border-radius: 12px;
+  color: #ffffff !important;
+  transition: all 0.3s ease;
+}
+
+/* Make the name crisp white */
+.demo-account-card h4, 
+.demo-account-card .name {
+  color: #ffffff !important;
+}
+
+/* Make the phone number and location a subtle gray so it's readable but not distracting */
+.demo-account-card p, 
+.demo-account-card .details {
+  color: #94a3b8 !important; 
+}
+
+/* Add a cool glowing hover effect when they are clicked */
+.demo-account-card:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important; /* Slight red tint on hover */
+  border-color: #ef4444 !important; /* Brighter red border */
+  cursor: pointer;
+}
+
+/* 1. Main Modal Background */
+/* Targets the pop-up container (adjust class name if yours is different, like .dialog-box or .popup) */
+.modal-content, 
+.modal-container {
+  background-color: #17164a !important; /* Deep midnight blue */
+  border: 1px solid #505081 !important; /* Subtle blue border */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important; /* Heavy shadow for depth */
+  color: #ffffff !important;
+}
+
+/* 2. Text Content (Headings, labels, and subtext) */
+.modal-content h2, 
+.modal-content h3,
+.modal-content h4,
+.modal-content label,
+.modal-content .title {
+  color: #ffffff !important; /* Crisp white for main text */
+}
+
+.modal-content p, 
+.modal-content .text-muted,
+.modal-content .subtext {
+  color: #94a3b8 !important; /* Light gray/blue for descriptions */
+}
+
+/* Close Icon (X) */
+.modal-content .btn-close, 
+.modal-content .close-icon,
+.modal-close-btn svg {
+  filter: invert(1) grayscale(100%) brightness(200%) !important; /* Forces a black SVG to turn white */
+  color: #ffffff !important;
+}
+
+/* 3. Input Fields & Textareas (The forms and the SMS text box) */
+.modal-content input, 
+.modal-content select, 
+.modal-content textarea,
+.sms-payload-box {
+  background-color: rgba(0, 0, 0, 0.25) !important; /* Dark recessed look */
+  border: 1px solid #505081 !important;
+  color: #ffffff !important;
+}
+
+/* Placeholder text inside the inputs */
+.modal-content input::placeholder, 
+.modal-content textarea::placeholder {
+  color: #8686AC !important;
+}
+
+/* 4. The Light Pink Donor Card (Inside the Request Modal) */
+.modal-content .donor-card-mini,
+.modal-content .selected-donor-info {
+  background-color: rgba(239, 68, 68, 0.1) !important; /* Faint dark red */
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+/* 5. Secondary Buttons (Cancel / Copy Text) */
+.modal-content .btn-light, 
+.modal-content .btn-secondary,
+.cancel-btn, 
+.copy-btn {
+  background-color: rgba(255, 255, 255, 0.05) !important; /* Very faint transparent white */
+  border: 1px solid #505081 !important;
+  color: #ffffff !important;
+  transition: all 0.3s ease;
+}
+
+.modal-content .btn-light:hover, 
+.modal-content .btn-secondary:hover,
+.cancel-btn:hover,
+.copy-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important; /* Lights up slightly on hover */
+}
+
+/* Fix the white Latitude/Longitude wrapper */
+.location-wrapper, 
+.coordinates-container {
+  background-color: transparent !important; /* Or rgba(0, 0, 0, 0.25) */
+  border: none !important; 
+}
+
+/* Fix the solid grey Health Screening wrapper */
+.screening-container, 
+.health-wrapper {
+  background-color: rgba(0, 0, 0, 0.25) !important; /* Deep recessed dark background */
+  border: 1px solid rgba(239, 68, 68, 0.2) !important; /* Subtle red border */
+  color: #ffffff !important;
+}
+
+.screening-container h3,
+.screening-container p,
+.screening-container label,
+.health-wrapper h3,
+.health-wrapper p,
+.health-wrapper label {
+  color: #ffffff !important;
+}
+
+/* Fix the white Yes/No toggle buttons inside the grey box */
+.screening-container .toggle-btn,
+.screening-container .btn-white,
+.screening-container label.cursor-pointer,
+.health-wrapper .toggle-btn,
+.health-wrapper .btn-white,
+.health-wrapper label.cursor-pointer {
+  background-color: rgba(15, 14, 71, 0.8) !important; /* Midnight blue */
+  border: 1px solid #505081 !important;
+  color: #ffffff !important;
+}
+
+.screening-container label.cursor-pointer:hover,
+.health-wrapper label.cursor-pointer:hover,
+.screening-container .toggle-btn:hover {
+  background-color: #272757 !important;
+  border-color: #ef4444 !important;
+}
+
+/* 1. Fix the GPS Permission Alert Box */
+.gps-alert, 
+.alert-warning {
+  background-color: rgba(245, 158, 11, 0.1) !important; /* Very dark amber/gold background */
+  border: 1px solid rgba(245, 158, 11, 0.3) !important; /* Subtle amber border */
+  color: #f8fafc !important; /* Crisp white title */
+}
+
+/* Ensure the subtext inside the GPS alert is readable */
+.gps-alert p, 
+.gps-alert .text-muted,
+.gps-alert span,
+.gps-alert div {
+  color: #cbd5e1 !important; /* Light gray text */
+}
+
+.gps-alert .font-bold,
+.gps-alert #geo-title {
+  color: #f8fafc !important;
+}
+
+/* Fix the invisible text in the GPS Success Alert */
+.alert-success, 
+.gps-captured-box {
+  background-color: rgba(16, 185, 129, 0.1) !important; /* Faint, dark green background */
+  border: 1px solid rgba(16, 185, 129, 0.4) !important; /* Subtle glowing green border */
+  color: #6ee7b7 !important; /* Bright, legible light-green text for the title */
+}
+
+/* Ensure the latitude/longitude text below it is also perfectly readable */
+.alert-success p, 
+.alert-success .subtext,
+.gps-captured-box span,
+.alert-success span,
+.alert-success div {
+  color: #a7f3d0 !important; /* Softer light-green for the coordinates */
+}
+
+.alert-success .font-bold,
+.alert-success #geo-title,
+.gps-captured-box .font-bold {
+  color: #6ee7b7 !important;
+}
+
+/* 2. Fix the Large Rare Blood Phenotype Wrapper */
+.rare-blood-wrapper, 
+.phenotype-section {
+  background-color: rgba(0, 0, 0, 0.25) !important; /* Deep, recessed dark background */
+  border: 1px solid rgba(251, 191, 36, 0.3) !important; /* Subtle gold border to match the 'Priority Network' tag */
+  color: #ffffff !important;
+}
+
+/* 3. Fix the Inner Info Box (With the blue shield icon) */
+.info-box, 
+.priority-network-alert {
+  background-color: rgba(59, 130, 246, 0.1) !important; /* Faint dark blue to match the shield icon */
+  border: 1px solid rgba(59, 130, 246, 0.3) !important; /* Subtle blue border */
+  color: #93c5fd !important; /* Light blue text so it is 100% visible and readable */
+}
+
+/* 1. If you are using standard Radio Buttons (Hidden input + Label) */
+input[type="radio"]:checked + label,
+input[type="checkbox"]:checked + label,
+label:has(input[type="radio"]:checked),
+label:has(input[type="checkbox"]:checked) {
+  background-color: #ef4444 !important; /* RedNova Red */
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important; /* Subtle red glow */
+}
+
+/* 2. If you are using standard <button> tags and a JS framework */
+.btn-group .btn.active, 
+.toggle-btn.active,
+.selected {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Optional: Dim the unselected buttons slightly so the red pops even more */
+.screening-container .toggle-btn,
+.health-wrapper .toggle-btn {
+  color: #8686AC !important; /* Muted grey/blue text for unselected options */
+}
+
+/* Footer Theming */
+footer {
+  display: flex;
+  justify-content: flex-end; /* Use 'center' if you prefer it in the middle */
+  padding: 20px;
+  background-color: var(--bg-main) !important;
+  border-top: 1px solid rgba(239, 68, 68, 0.2) !important; /* A subtle red border line to match the theme */
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+}
+
+/* Accessibility: Mobile Touch Target Standard (Minimum 44x44px) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Form Inputs & Interactive controls tap target guarantee */
+input[type="text"],
+input[type="tel"],
+input[type="date"],
+input[type="number"],
+select,
+textarea,
+button {
+  touch-action: manipulation;
+}
+
+/* Accessible focus visible outlines */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #e11d48 !important;
+  outline-offset: 2px !important;
+}
+
+/* Glassmorphic Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+/* Pulse animation for urgent badges */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.88; transform: scale(1.02); }
+}
+
+.pulse-urgent {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Toast container */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: calc(100vw - 2rem);
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  #toast-container {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+  }
+}
+
+.toast {
+  pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(1rem);
+  opacity: 0;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ========================================================= */
+/* 🛡️ HIGH-CONTRAST & TEXT LEGIBILITY SAFEGUARDS            */
+/* ========================================================= */
+
+/* Modal input controls default strictly to dark text and crisp placeholders */
+#request-modal input,
+#request-modal textarea,
+#request-modal select,
+#sms-modal input,
+#sms-modal textarea,
+#sms-modal select {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+}
+
+/* Ensure all light containers default strictly to dark high-contrast text */
+.bg-white, [class*="bg-white"],
+.bg-amber-50, [class*="bg-amber-50"],
+.bg-amber-100, [class*="bg-amber-100"],
+.bg-yellow-50, [class*="bg-yellow-50"],
+.bg-slate-50, [class*="bg-slate-50"],
+.bg-slate-100, [class*="bg-slate-100"],
+.bg-rose-50, [class*="bg-rose-50"],
+.bg-emerald-50, [class*="bg-emerald-50"] {
+  color: #0f172a;
+}
+
+/* Modal text reset: ensure modal container and children default to dark slate text */
+#request-modal .bg-white,
+#request-modal .bg-amber-50,
+#request-modal .bg-slate-50,
+#request-modal .bg-rose-50 {
+  color: #0f172a;
+}
+
+#request-modal input,
+#request-modal textarea,
+#request-modal select {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}

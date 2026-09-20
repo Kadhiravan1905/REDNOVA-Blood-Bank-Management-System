@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RedNova — Find Eligible Donors & Rare Blood SOS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+  
+  <!-- Navigation Header -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      
+      <!-- Left: Back to Home + Logo -->
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="back-btn inline-flex items-center gap-1.5 px-3 py-1.5 font-bold text-xs min-h-[44px]">
+          <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          <span class="hidden sm:inline">← Back to Home</span>
+          <span class="sm:hidden">← Home</span>
+        </a>
+
+        <a href="index.html" class="flex items-center gap-2.5 group font-heading font-extrabold text-lg text-slate-900 min-h-[44px]">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-rose-200 group-hover:scale-105 transition-transform">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <span class="logo-text hidden md:inline">Red<span class="text-rose-500">Nova</span></span>
+        </a>
+      </div>
+
+      <!-- Center: Standard Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-1">
+        <a href="index.html" class="text-xs sm:text-sm font-bold text-slate-700 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors min-h-[44px] inline-flex items-center">
+          Home
+        </a>
+        <a href="find.html" class="text-xs sm:text-sm font-bold text-rose-600 bg-rose-50 border border-rose-200/70 px-3.5 py-2 rounded-xl transition-colors min-h-[44px] inline-flex items-center">
+          Find Donors
+        </a>
+        <a href="profile.html" class="text-xs sm:text-sm font-bold text-slate-700 hover:text-rose-600 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors min-h-[44px] inline-flex items-center">
+          Donor Dashboard
+        </a>
+      </nav>
+
+      <!-- Right: Search + Auth Container -->
+      <div class="flex items-center gap-3">
+        <div class="search-container nav-search hidden md:flex items-center">
+          <input type="text" id="top-nav-donor-search" placeholder="Search..." style="background-color: #17164a !important; color: #ef4444 !important; border: 1px solid #505081 !important; border-radius: 8px; padding: 8px 12px; outline: none; width: 200px;">
+        </div>
+        <div id="nav-auth-container" class="flex items-center gap-2">
+          <a href="login.html" class="inline-flex items-center justify-center text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors min-h-[44px]">Login</a>
+          <a href="register.html" class="inline-flex items-center justify-center text-xs sm:text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 px-3.5 py-2 rounded-xl shadow-sm shadow-rose-200 transition-all min-h-[44px]">Become a Donor</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Search Container -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    
+    <!-- Rare Blood Emergency SOS Banner (Visible when SOS Mode Active) -->
+    <div id="rare-sos-banner" class="hidden mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-rose-900 via-rose-800 to-amber-900 text-white shadow-xl border border-amber-500/40 relative overflow-hidden animate-pulse">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-400 text-rose-950 flex items-center justify-center font-black text-xl flex-shrink-0 shadow-md">
+            🚨
+          </div>
+          <div>
+            <h2 class="text-base sm:text-lg font-black font-heading tracking-wide text-amber-200">
+              RARE BLOOD REGISTRY & PRIORITY SOS CHANNEL ACTIVE
+            </h2>
+            <p class="text-xs text-amber-100/90 mt-0.5">
+              Extended Regional Broadcast Radius (250km) active for ultra-rare phenotypes (Bombay hh, Rh-null, D--).
+            </p>
+          </div>
+        </div>
+        <span class="px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-bold rounded-full uppercase tracking-wider flex-shrink-0">
+          Regional Broadcast Ready
+        </span>
+      </div>
+    </div>
+
+    <!-- Search Controls & Location Bar -->
+    <div class="dashboard-container rounded-2xl p-5 sm:p-8 mb-8">
+      
+      <!-- Top Bar: Title + Rare SOS Switch -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-6 border-b border-rose-500/20">
+        <div class="flex-1">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950/80 text-rose-300 text-xs font-bold uppercase tracking-wider mb-2 border border-rose-500/40">
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Live Availability Radar
+          </div>
+          <h1 id="search-header-title" class="text-2xl sm:text-3xl font-black font-heading text-white">Find Eligible Blood Donors</h1>
+          <p class="text-xs sm:text-sm text-slate-300 mt-1">
+            Surfacing active donors who have completed their mandatory 90-day donation window, sorted by nearest proximity.
+          </p>
+        </div>
+
+        <!-- Rare Blood Emergency SOS Toggle Switch -->
+        <div class="sos-mode-container rare-sos-card p-3.5 flex items-center justify-between gap-3 self-start lg:self-center">
+          <div>
+            <span class="title text-[10px] uppercase font-black tracking-wider block">🌟 RARE SOS MODE</span>
+            <span class="subtitle text-[11px] font-bold block">Bombay / Rh-null Channel</span>
+          </div>
+          <label class="relative inline-flex items-center justify-center cursor-pointer flex-shrink-0 min-h-[44px] min-w-[44px]">
+            <input type="checkbox" id="rare-sos-toggle" class="sr-only peer">
+            <div class="w-12 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[11px] after:left-[2px] after:bg-white after:border-slate-800 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- ================================================ -->
+      <!-- 📍 HYBRID LOCALIZATION — Dual-Mode Location Header -->
+      <!-- ================================================ -->
+      <div class="mt-6 pb-6 border-b border-slate-100">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">Search Center</span>
+          <span id="loc-mode-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 uppercase tracking-wide">
+            GPS Active
+          </span>
+        </div>
+
+        <!-- Mode Tab Switcher -->
+        <div class="inline-flex items-center p-1 bg-black/40 rounded-xl gap-1 mb-4 w-full sm:w-auto border border-rose-500/20" role="tablist">
+          <button
+            type="button"
+            id="tab-gps"
+            role="tab"
+            aria-selected="true"
+            data-loc-mode="gps"
+            class="action-btn toggle-btn loc-mode-tab flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs transition-all min-h-[44px]">
+            <svg class="w-4 h-4 text-rose-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            </svg>
+            <span>📍 Use Live GPS</span>
+          </button>
+          <button
+            type="button"
+            id="tab-manual"
+            role="tab"
+            aria-selected="false"
+            data-loc-mode="manual"
+            class="action-btn toggle-btn loc-mode-tab flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold text-xs transition-all min-h-[44px]">
+            <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+            </svg>
+            <span>✏️ Enter Area / Pincode</span>
+          </button>
+        </div>
+
+        <!-- GPS Mode Panel -->
+        <div id="loc-panel-gps" class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div class="flex items-center gap-3 flex-1 p-3 inner-stat-box rounded-xl w-full sm:w-auto">
+            <div class="w-9 h-9 rounded-xl bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+              </svg>
+            </div>
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block">Active Search Center</span>
+              <span id="location-status-label" class="text-xs font-bold text-white block">Central Puducherry (Default)</span>
+              <span id="location-coords-display" class="text-[10px] font-mono text-slate-400 block">11.9401°N, 79.8341°E</span>
+            </div>
+          </div>
+          <!-- Search Center Action & ETA Pill Container -->
+          <div class="flex items-center gap-2.5 w-full sm:w-auto">
+            <!-- ETA Pill -->
+            <div class="eta-pill action-btn text-slate-200 px-4 py-2.5 rounded-xl flex items-center gap-2 font-bold text-xs min-h-[44px] shadow-sm">
+              <span class="text-rose-400 text-sm flex-shrink-0">🕒</span>
+              <span class="font-bold">ETA: &lt;15 mins</span>
+            </div>
+            <!-- Detect GPS Button -->
+            <button
+              type="button"
+              id="btn-detect-location"
+              class="action-btn inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-slate-200 font-bold text-xs shadow-sm active:scale-95 transition-all min-h-[44px] flex-1 sm:flex-none">
+              <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span class="font-bold">Detect My Location</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Manual Area / Pincode Panel -->
+        <div id="loc-panel-manual" class="hidden space-y-3">
+          <div class="flex flex-col sm:flex-row items-stretch gap-2">
+            <div class="search-input-container relative flex-1">
+              <div class="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="manual-location-input"
+                placeholder="e.g., Lawspet, Puducherry or 605008"
+                autocomplete="off"
+                class="search-input w-full pl-10 pr-4 py-3 rounded-xl text-sm font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all min-h-[44px]">
+              <!-- Autocomplete Suggestions Dropdown -->
+              <ul id="loc-suggestions" class="dropdown-menu hidden absolute top-full left-0 right-0 mt-1 rounded-xl shadow-xl z-20 overflow-hidden max-h-56 overflow-y-auto text-sm divide-y divide-rose-500/20">
+              </ul>
+            </div>
+            <button
+              type="button"
+              id="btn-apply-manual-location"
+              class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md shadow-rose-950 active:scale-95 transition-all min-h-[44px]">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+              <span>Apply</span>
+            </button>
+          </div>
+
+          <!-- Location Accuracy Banner -->
+          <div id="loc-accuracy-banner" class="hidden items-center gap-3 p-3.5 bg-emerald-950/80 border border-emerald-500/40 rounded-xl text-xs">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 text-emerald-300 flex items-center justify-center flex-shrink-0 font-black text-base">
+              📍
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="font-black text-emerald-300 block">Searching within 5 km of:</span>
+              <span id="loc-accuracy-label" class="font-bold text-white truncate block">Lawspet, Puducherry</span>
+            </div>
+            <span id="loc-accuracy-coords" class="text-[10px] font-mono text-emerald-400 flex-shrink-0 text-right hidden sm:block">
+              11.9301°N, 79.8081°E
+            </span>
+          </div>
+
+          <!-- GPS Permission Denied Warning (shown automatically on deny) -->
+          <div id="gps-denied-banner" class="hidden items-center gap-3 p-3.5 bg-amber-950/80 border border-amber-400/40 rounded-xl text-xs">
+            <svg class="w-5 h-5 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+            <span class="text-amber-200 font-bold flex-1">GPS access denied or unavailable. <span class="font-black underline">Manual area mode activated automatically.</span> Enter a landmark or pincode to search.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Standard Blood Type Filters (Visible in Standard Mode) -->
+      <div id="standard-blood-filters" class="mt-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-300">Filter by Blood Type</label>
+          
+          <!-- Dropdown Selector (Mobile) -->
+          <div class="sm:hidden w-full">
+            <select id="bloodtype-select-dropdown" class="dropdown-menu w-full px-3.5 py-2.5 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-rose-500 min-h-[44px]">
+              <option value="ALL">ALL Standard Blood Types</option>
+              <option value="O+">O+ (O Positive)</option>
+              <option value="O-">O- (O Negative)</option>
+              <option value="A+">A+ (A Positive)</option>
+              <option value="A-">A- (A Negative)</option>
+              <option value="B+">B+ (B Positive)</option>
+              <option value="B-">B- (B Negative)</option>
+              <option value="AB+">AB+ (AB Positive)</option>
+              <option value="AB-">AB- (AB Negative)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pill Buttons (Desktop & Tablet) -->
+        <div class="hidden sm:flex flex-wrap gap-2" id="bloodtype-filters">
+          <button type="button" data-type="ALL" class="blood-type-btn blood-filter-btn active nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">ALL</button>
+          <button type="button" data-type="O+" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">O+</button>
+          <button type="button" data-type="O-" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">O-</button>
+          <button type="button" data-type="A+" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">A+</button>
+          <button type="button" data-type="A-" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">A-</button>
+          <button type="button" data-type="B+" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">B+</button>
+          <button type="button" data-type="B-" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">B-</button>
+          <button type="button" data-type="AB+" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">AB+</button>
+          <button type="button" data-type="AB-" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">AB-</button>
+        </div>
+      </div>
+
+      <!-- Rare Blood Type Filters (Visible in SOS Mode) -->
+      <div id="rare-blood-filters" class="hidden mt-6">
+        <label class="block text-xs font-black uppercase tracking-wider text-amber-400 mb-2.5">
+          Select Rare Phenotype Channel
+        </label>
+        <div class="flex flex-wrap gap-2.5">
+          <button type="button" data-type="Bombay (hh)" class="blood-type-btn blood-filter-btn active nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">
+            🌟 Bombay (hh)
+          </button>
+          <button type="button" data-type="Rh-null" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">
+            🌟 Rh-null ("Golden Blood")
+          </button>
+          <button type="button" data-type="D--" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">
+            D-- (Rh Deficiency)
+          </button>
+          <button type="button" data-type="AB- (Rare)" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">
+            AB- (Rare Variant)
+          </button>
+          <button type="button" data-type="RARE_ALL" class="blood-type-btn blood-filter-btn nav-active px-4 py-2.5 rounded-xl font-bold text-xs min-h-[44px]">
+            All Rare Phenotypes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section Header -->
+    <div class="flex items-center justify-between mb-5">
+      <div class="flex items-center gap-2">
+        <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700 font-heading">
+          Available Matches:
+        </h2>
+        <span id="results-count" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-rose-100 text-rose-800">0</span>
+      </div>
+      <div class="text-xs text-slate-500 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+        <span>Sorted nearest to farthest</span>
+      </div>
+    </div>
+
+    <!-- Donor Cards Grid -->
+    <div id="donors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+      <!-- Injected dynamically via find.js -->
+    </div>
+
+    <!-- Empty State Card -->
+    <div id="empty-state" class="hidden text-center py-14 px-5 bg-white rounded-2xl border border-slate-200 shadow-sm max-w-xl mx-auto">
+      <div class="w-16 h-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-rose-100 shadow-sm">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+      </div>
+      <h3 id="empty-state-title" class="text-lg font-bold text-slate-900 font-heading">No Eligible Donors Found</h3>
+      <p id="empty-state-desc" class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+        There are currently no available donors matching this blood type who meet the mandatory <strong>90-day medical interval</strong>.
+      </p>
+      <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button type="button" onclick="document.querySelector('[data-type=\'ALL\']').click()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all min-h-[44px]">
+          View All Blood Types
+        </button>
+        <a href="register.html" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-xs border border-rose-200 transition-all inline-flex items-center justify-center min-h-[44px]">
+          Register New Donor
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Request Contact Modal -->
+  <div id="request-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="modal-content modal-container rounded-2xl max-w-lg w-full p-5 sm:p-8 shadow-2xl border transform transition-all max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div>
+          <h3 id="modal-header-title" class="text-lg font-bold font-heading title">Request Contact Initiation</h3>
+          <p class="text-xs text-muted mt-0.5">Send a real-time notification alert to this donor.</p>
+        </div>
+        <button type="button" id="modal-close-btn" class="btn-close text-slate-400 hover:text-white p-2 rounded-lg transition-colors min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
+          <svg class="w-5 h-5 close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Target Donor Banner -->
+      <div id="modal-donor-banner" class="mt-4">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Request Form -->
+      <form id="contact-request-form" class="mt-4 space-y-4">
+        <input type="hidden" id="modal-donor-id" name="donorId">
+        <input type="hidden" id="modal-is-rare-sos" name="isRareSOS" value="false">
+
+        <!-- Requester Name -->
+        <div>
+          <label for="req-modal-name" class="block text-xs font-bold uppercase tracking-wider mb-1">
+            Your Name (Requester / Transfusion Officer) *
+          </label>
+          <input 
+            type="text" 
+            id="req-modal-name" 
+            name="requesterName" 
+            required 
+            placeholder="e.g. Dr. Ramesh Nathan / Transfusion Unit" 
+            class="w-full px-3.5 py-3 rounded-xl text-sm font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all min-h-[44px]">
+        </div>
+
+        <!-- Requester Phone & Urgency -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="req-modal-phone" class="block text-xs font-bold uppercase tracking-wider mb-1">
+              Your Contact Phone *
+            </label>
+            <input 
+              type="tel" 
+              id="req-modal-phone" 
+              name="requesterPhone" 
+              required 
+              placeholder="10-digit number" 
+              class="w-full px-3.5 py-3 rounded-xl text-sm font-mono font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all min-h-[44px]">
+          </div>
+
+          <div>
+            <label for="req-modal-urgency" class="block text-xs font-bold uppercase tracking-wider mb-1">
+              Urgency Level *
+            </label>
+            <select 
+              id="req-modal-urgency" 
+              name="urgency" 
+              required 
+              class="w-full px-3.5 py-3 rounded-xl text-sm font-bold focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all min-h-[44px]">
+              <option value="Critical" selected>🚨 Critical (Immediate / ICU / Rare SOS)</option>
+              <option value="Urgent">⚡ Urgent (Within 4-8 hrs)</option>
+              <option value="Standard">📅 Standard (Scheduled)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Hospital Name -->
+        <div>
+          <label for="req-modal-hospital" class="block text-xs font-bold uppercase tracking-wider mb-1">
+            Hospital / Medical Facility *
+          </label>
+          <input 
+            type="text" 
+            id="req-modal-hospital" 
+            name="hospital" 
+            required
+            placeholder="e.g. JIPMER Super Specialty Block, Puducherry" 
+            class="w-full px-3.5 py-3 rounded-xl text-sm font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all min-h-[44px]">
+        </div>
+
+        <!-- Message / Details -->
+        <div>
+          <label for="req-modal-message" class="block text-xs font-bold uppercase tracking-wider mb-1">
+            Emergency Case Details & Cross-Matching Notes
+          </label>
+          <textarea 
+            id="req-modal-message" 
+            name="message" 
+            rows="2" 
+            placeholder="Specify patient room, required units, cross-match compatibility notes, or priority transport instructions..." 
+            class="w-full px-3.5 py-2.5 rounded-xl text-xs font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all"></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-3 flex items-center gap-3">
+          <button 
+            type="button" 
+            id="modal-cancel-btn" 
+            class="cancel-btn btn-secondary w-1/3 py-3 rounded-xl font-bold text-xs transition-all min-h-[44px]">
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            id="btn-submit-contact-req" 
+            class="w-2/3 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-lg shadow-rose-950 flex items-center justify-center gap-2 active:scale-[0.99] transition-all min-h-[44px]">
+            <span>Send Alert to Donor</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SMS Fallback Modal -->
+  <div id="smsModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="modal-content modal-container rounded-2xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border transform transition-all max-h-[90vh] overflow-y-auto">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-rose-950 text-rose-400 border border-rose-500/40 flex items-center justify-center text-lg flex-shrink-0">
+            📱
+          </div>
+          <div>
+            <h3 class="text-lg font-bold font-heading title">SMS Fallback Payload</h3>
+            <p class="text-xs text-muted">Offline / 2G Emergency Dispatch Generator</p>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          onclick="closeSmsModal()" 
+          class="btn-close text-slate-400 hover:text-white p-2 rounded-lg transition-colors min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
+          <svg class="w-5 h-5 close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- SMS Payload Box -->
+      <div class="mt-4 space-y-3">
+        <label for="smsPayloadText" class="block text-xs font-bold uppercase tracking-wider">
+          Generated 160-Character SMS Dispatch Text
+        </label>
+        <textarea 
+          id="smsPayloadText" 
+          readonly 
+          rows="6" 
+          class="sms-payload-box w-full p-3.5 rounded-xl font-mono text-xs focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all resize-none font-semibold">🚨 REDNOVA EMERGENCY 🚨
+Blood: D--
+Hospital: IGGGH Puducherry
+Contact: +91 56******71
+Req ID: #1787744117081_z4mv
+Respond ASAP if available!</textarea>
+        
+        <p class="text-[11px] text-muted flex items-center gap-1.5">
+          <span class="text-emerald-400 font-bold">✓ Standard 1-Segment SMS</span>
+          <span>• Works without internet connectivity via standard cellular carrier.</span>
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-6 pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center gap-2.5">
+        <button 
+          type="button" 
+          onclick="copySmsPayload()" 
+          class="copy-btn btn-secondary w-full sm:w-1/2 py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all min-h-[44px] active:scale-95">
+          <span>📋 Copy Text</span>
+        </button>
+        <a 
+          id="smsSendBtn" 
+          href="#" 
+          class="w-full sm:w-1/2 py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md shadow-rose-950 flex items-center justify-center gap-2 transition-all min-h-[44px] active:scale-95 text-center">
+          <span>📱 Open SMS App</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer with Reset Demo Data Button -->
+  <footer>
+    <button 
+      type="button" 
+      data-action="reset-demo" 
+      class="reset-btn inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-950/60 hover:bg-indigo-900/80 text-white font-bold border border-rose-500/30 transition-all min-h-[44px] min-w-[44px] active:scale-95 shadow-sm"
+      title="Clear localStorage and restore initial seed donors & sample requests">
+      <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+      <span>Reset Demo Data</span>
+    </button>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/localization.js"></script>
+  <script src="js/find.js"></script>
+</body>
+</html>
