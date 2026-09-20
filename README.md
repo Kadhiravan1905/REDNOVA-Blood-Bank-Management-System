@@ -44,7 +44,7 @@ RedNova/
 ## 🚀 Run Locally
 
 ```bash
-git clone https://github.com/Kadhiravan1905/REDNOVA-Blood-Bank-Management-System.git
+git clone https://kadhiravan1905.github.io/RedNova-Blood-Bank-Management-System/
 ```
 
 Open `index.html` or run it using **VS Code Live Server**.
