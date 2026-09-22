@@ -1,5 +1,11 @@
 # 🩸 RedNova
 
+<p align="center">
+  <img src="images/RedNova%20banner.png"
+       alt="RedNova - Blood Bank Management System"
+       width="100%">
+</p>
+
 ### Hyperlocal Blood Donor Availability Network
 
 RedNova is a lightweight web application that helps users **find eligible blood donors nearby** based on blood group, availability, eligibility, and location.
